@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/a.css">
+  <script src="./js/jsonp.js"></script>
+  <script src="./js/ajax.js"></script>
+  <script src="https://lib.baomitu.com/socket.io/2.3.0/socket.io.js"></script>
+  <script>
+    //连接服务器
+    var socket = io('http://localhost:3000');
+    socket.on('banner',(data)=>{
+      console.log('首页_客户端被动的收到',data)
+    })
+  </script>
+  <script>
+
+    window.onload=function(){
+
+      let btn2 = document.getElementById('btn2');
+
+
+      //ajax请求
+      btn2.onclick=function(){
+        ajax({
+          url:'http://localhost:3000/api/login',//同域 -> index.html运行在3000下
+          // url:'http://47.116.74.169:9001/api/goods/home',//同域 -> index.html运行在3000下
+          // url:'http://localhost:3000/proxy/home',//访问我方接口
+          type:'post',
+          data:{username:'佳',password:'佳123'},
+          success:function(res){
+            console.log('前端打印ajax结果123',res)
+          },
+          error:function(err){
+            console.log('前端打印ajax',err)
+          }
+        })
+      };
+
+
+      //前端主动请求了轮播图数据
+      ajax({
+          url:'http://localhost:3000/api/list/banner',//访问我方接口
+          // type:'post',
+          data:{_limit:1,token:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IuS9syIsIl9pZCI6IjVmZDAzMGU4MjE3NDVjMGQ3NGM1MmZkZSIsImlhdCI6MTYwNzU2NzQ3MiwiZXhwIjoxNjA3NjUzODcyfQ.5bS7VIiGyw1AoAC4DR9OrODQevQ0SX71AB3_oG4ViuU'},
+          success:function(res){
+            console.log('前端打印banner',res)
+          },
+          error:function(err){
+            console.log('前端打印ajax',err)
+          }
+        })
+      
+    }
+
+  </script>
+  
+</head>
+<body>
+  首页
+  <!-- <img src="/upload/angle.jpg" alt=""> -->
+  <button id="btn2">ajax请求</button>
+</body>
+</html>
